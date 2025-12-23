@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlatform - Создание учебных материалов</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-book-open"></i> EduPlatform</h1>
+                <p class="subtitle">Создание образовательного контента и тестирование</p>
+            </div>
+            <div class="header-actions">
+                <button id="toggleMode" class="btn btn-outline">
+                    <i class="fas fa-edit"></i> Режим редактора
+                </button>
+                <button id="saveAll" class="btn btn-success">
+                    <i class="fas fa-save"></i> Сохранить всё
+                </button>
+            </div>
+        </header>
+
+        <!-- Основной контент -->
+        <main class="app-main">
+            <!-- Боковая панель с уроками -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-list"></i> Уроки</h3>
+                    <button id="newLesson" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Новый урок
+                    </button>
+                </div>
+                <div class="lessons-list" id="lessonsList">
+                    <!-- Список уроков будет загружен здесь -->
+                </div>
+                <div class="sidebar-footer">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span id="lessonsCount">0 уроков</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span id="quizzesCount">0 тестов</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Основная рабочая область -->
+            <div class="content-area">
+                <!-- Редактор урока -->
+                <div id="editorSection" class="section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-edit"></i> Редактор учебного материала</h2>
+                        <div class="section-actions">
+                            <button id="previewLesson" class="btn btn-outline">
+                                <i class="fas fa-eye"></i> Предпросмотр
+                            </button>
+							<button id="passTestBtn" class="btn btn-success" style="display: none;">
+								<i class="fas fa-graduation-cap"></i> Пройти тест
+							</button>
+							<button id="addQuiz" class="btn btn-primary">
+								<i class="fas fa-plus-circle"></i> Добавить тест
+							</button>                            
+                        </div>
+                    </div>
+
+                    <!-- Форма урока -->
+                    <div class="lesson-form">
+                        <div class="form-group">
+                            <label for="lessonTitle">
+                                <i class="fas fa-heading"></i> Название урока
+                            </label>
+                            <input type="text" id="lessonTitle" class="form-control" 
+                                   placeholder="Введите название урока...">
+                        </div>
+
+                        <!-- Панель инструментов редактора -->
+                        <div class="editor-toolbar" id="toolbar">
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="formatBlock" data-value="p" title="Абзац">
+                                    <i class="fas fa-paragraph"></i>
+                                </button>
+                                <button class="tool-btn" data-command="formatBlock" data-value="h2" title="Заголовок 2">
+                                    H2
+                                </button>
+                                <button class="tool-btn" data-command="formatBlock" data-value="h3" title="Заголовок 3">
+                                    H3
+                                </button>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="bold" title="Жирный">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="tool-btn" data-command="italic" title="Курсив">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button class="tool-btn" data-command="underline" title="Подчеркнутый">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="insertOrderedList" title="Нумерованный список">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                                <button class="tool-btn" data-command="insertUnorderedList" title="Маркированный список">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <label class="tool-label">
+                                    <i class="fas fa-font"></i>
+                                    <select id="fontFamily" class="tool-select">
+                                        <option value="Arial">Arial</option>
+                                        <option value="Times New Roman">Times New Roman</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Courier New">Courier New</option>
+                                        <option value="Verdana">Verdana</option>
+                                        <option value="Roboto">Roboto</option>
+                                        <option value="Open Sans">Open Sans</option>
+                                    </select>
+                                </label>
+                                
+                                <label class="tool-label">
+                                    <i class="fas fa-text-height"></i>
+                                    <select id="fontSize" class="tool-select">
+                                        <option value="12px">12px</option>
+                                        <option value="14px">14px</option>
+                                        <option value="16px" selected>16px</option>
+                                        <option value="18px">18px</option>
+                                        <option value="20px">20px</option>
+                                        <option value="24px">24px</option>
+                                        <option value="32px">32px</option>
+                                    </select>
+                                </label>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <button class="tool-btn color-picker" id="textColorPicker" title="Цвет текста">
+                                    <i class="fas fa-palette"></i>
+                                    <input type="color" id="textColor" value="#000000" style="display: none;">
+                                </button>
+                                
+                                <button class="tool-btn color-picker" id="bgColorPicker" title="Цвет фона">
+                                    <i class="fas fa-fill-drip"></i>
+                                    <input type="color" id="bgColor" value="#ffffff" style="display: none;">
+                                </button>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <button class="tool-btn" id="insertImage" title="Вставить изображение">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <button class="tool-btn" id="insertVideo" title="Вставить видео">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                                <button class="tool-btn" id="insertAudio" title="Вставить аудио">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="toolbar-group">
+                                <button class="tool-btn" data-command="justifyLeft" title="Выровнять по левому краю">
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                                <button class="tool-btn" data-command="justifyCenter" title="Выровнять по центру">
+                                    <i class="fas fa-align-center"></i>
+                                </button>
+                                <button class="tool-btn" data-command="justifyRight" title="Выровнять по правому краю">
+                                    <i class="fas fa-align-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Редактор контента -->
+                        <div class="editor-container">
+                            <div id="contentEditor" class="content-editor" contenteditable="true">
+                                <p>Начните вводить текст здесь...</p>
+                                <p>Используйте панель инструментов для форматирования.</p>
+                            </div>
+                        </div>
+
+                        <!-- Предпросмотр загруженных медиа -->
+                        <div class="media-preview" id="mediaPreview">
+                            <h4><i class="fas fa-images"></i> Загруженные медиафайлы</h4>
+                            <div class="media-grid" id="mediaGrid">
+                                <!-- Загруженные файлы будут здесь -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Редактор теста -->
+                <div id="quizSection" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-question-circle"></i> Редактор теста</h2>
+                        <div class="section-actions">
+                            <button id="backToEditor" class="btn btn-outline">
+                                <i class="fas fa-arrow-left"></i> Назад к уроку
+                            </button>
+                            <button id="previewQuiz" class="btn btn-outline">
+                                <i class="fas fa-eye"></i> Предпросмотр теста
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-form">
+                        <div class="form-group">
+                            <label for="quizTitle">
+                                <i class="fas fa-heading"></i> Название теста
+                            </label>
+                            <input type="text" id="quizTitle" class="form-control" 
+                                   placeholder="Введите название теста...">
+                        </div>
+
+                        <!-- Список вопросов -->
+                        <div class="questions-list" id="questionsList">
+                            <!-- Вопросы будут добавляться здесь -->
+                        </div>
+
+                        <!-- Кнопка добавления вопроса -->
+                        <div class="add-question-section">
+                            <button id="addQuestion" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Добавить вопрос
+                            </button>
+                            <div class="question-types">
+                                <label class="radio-label">
+                                    <input type="radio" name="questionType" value="single" checked>
+                                    <span>Один правильный ответ</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="questionType" value="multiple">
+                                    <span>Несколько правильных ответов</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Предпросмотр урока -->
+                <div id="previewSection" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-eye"></i> Предпросмотр урока</h2>
+                        <button id="closePreview" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Закрыть
+                        </button>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        <!-- Контент урока будет здесь -->
+                    </div>
+                </div>
+
+                <!-- Прохождение теста -->
+                <div id="testSection" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-graduation-cap"></i> Прохождение теста</h2>
+                        <button id="closeTest" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Закрыть тест
+                        </button>
+                    </div>
+                    <div class="test-container" id="testContainer">
+                        <!-- Тест будет здесь -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Модальные окна -->
+        <div id="uploadModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-upload"></i> Загрузка файла</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Перетащите файл сюда или нажмите для выбора</p>
+                        <input type="file" id="fileInput" accept="image/*,video/*,audio/*">
+                        <div class="file-info" id="fileInfo"></div>
+                    </div>
+                    <div class="progress-container" id="progressContainer" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">0%</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelUpload" class="btn btn-outline">Отмена</button>
+                    <button id="startUpload" class="btn btn-primary" disabled>Загрузить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>© 2024 EduPlatform. Платформа для создания образовательного контента.</p>
+                <div class="footer-links">
+                    <a href="#" id="exportBtn"><i class="fas fa-download"></i> Экспорт</a>
+                    <a href="#" id="importBtn"><i class="fas fa-upload"></i> Импорт</a>
+                    <a href="#" id="helpBtn"><i class="fas fa-question-circle"></i> Помощь</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="src/api.js"></script>
+    <script src="src/editor.js"></script>
+    <script src="src/quiz.js"></script>
+    <script src="src/app.js"></script>
+</body>
+</html>
